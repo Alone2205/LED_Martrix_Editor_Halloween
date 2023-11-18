@@ -1,0 +1,578 @@
+#include <LedControlMS.h>               //libery LedControlMS.h
+
+LedControl lc = LedControl(D7, D5, D4, 4); //DIN CLK CS MAX
+
+int delayTime = 125;                //ประกาศ ตัวแปร delayTime = 125
+int delayTime1 = 100;               //ประกาศ ตัวแปร delayTime1 = 100
+int end = 0;                        //ประกาศ ตัวแปร end
+int rip = 0;                        //ประกาศ ตัวแปร rip
+int i;
+void setup() {
+  lc.shutdown(0, false);  
+  lc.shutdown(1, false);
+  lc.shutdown(2, false);
+  lc.shutdown(3, false);
+
+  lc.setIntensity(0, 20);         // การกำหนด ความสว่าง ของแต่ละ Frame
+  lc.setIntensity(1, 20);         // การกำหนด ความสว่าง ของแต่ละ Frame
+  lc.setIntensity(2, 20);         // การกำหนด ความสว่าง ของแต่ละ Frame
+  lc.setIntensity(3, 20);         // การกำหนด ความสว่าง ของแต่ละ Frame
+
+  lc.clearDisplay(0);             // การกำหนดให้ clear Frame 1
+  lc.clearDisplay(1);             // การกำหนดให้ clear Frame 2
+  lc.clearDisplay(2);             // การกำหนดให้ clear Frame 3
+  lc.clearDisplay(3);             // การกำหนดให้ clear Frame 4
+
+}
+
+byte S[] = {0b00000101, 0b00001010, 0b00000101, 0b00001010, 0b00010000, 0b00100000, 0b01000000, 0b10000000};    //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte S1[] = {0b10100000, 0b01010000, 0b10100000, 0b01010000, 0b00001000, 0b00000100, 0b00000010, 0b00000001};
+
+
+byte pumpkinn[] = {0b11000000, 0b11110011, 0b00000100, 0b00001000, 0b00111001, 0b00010000, 0b00001110, 0b00000001}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte pumpkinn1[] = {0b00000011, 0b11001111, 0b00100000, 0b00010000, 0b10011100, 0b00001000, 0b01110000, 0b10000000};
+
+
+byte Halloween[] = {0b00000000, 0b10100000, 0b10100100, 0b10101010, 0b11101010, 0b10101110, 0b10101010, 0b00001010}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte Halloween1[] = {0b00000000, 0b10000011, 0b10010010, 0b10010010, 0b10010010, 0b10010010, 0b11010011, 0b00011000};
+byte Halloween2[] = {0b00000000, 0b10000011, 0b10101010, 0b10101010, 0b10101011, 0b10101010, 0b10111011, 0b00101000};
+byte Halloween3[] = {0b00000000, 0b00010010, 0b11010010, 0b10011010, 0b10010110, 0b11010010, 0b10010010, 0b11000000};
+
+
+
+byte Halloweenn[] = {0b00000100, 0b00001010, 0b10101010, 0b10101110, 0b10101010, 0b11101010, 0b10100000, 0b10100000}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte Halloweenn1[] = {0b00010000, 0b00010000, 0b10010011, 0b10010010, 0b10010010, 0b10011010, 0b10000010, 0b11000011};
+byte Halloweenn2[] = {0b00101000, 0b00101000, 0b10101011, 0b10101010, 0b10111010, 0b10101011, 0b10000010, 0b10000011};
+byte Halloweenn3[] = {0b11000000, 0b10000000, 0b10010010, 0b11010010, 0b10011010, 0b11010110, 0b00010010, 0b00010010};
+
+
+
+
+byte pumpkin[] = {0b00000000, 0b00100000, 0b00110000, 0b00111100, 0b00000000, 0b00011101, 0b00001111, 0b00000101}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte pumpkin1[] = {0b00000000, 0b00000100, 0b00001100, 0b00111100, 0b00000000, 0b10111000, 0b11110000, 0b10100000};
+
+
+
+byte skull[] = {0b00000000, 0b10000000, 0b10000000, 0b10000000, 0b10000000, 0b10000000, 0b00000000, 0b00000000}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte skull1[] = {0b10000000, 0b11000000, 0b11000000, 0b01000000, 0b11000000, 0b11000000, 0b00000000, 0b00000000};
+byte skull2[] = {0b11000000, 0b11100000, 0b11100000, 0b10100000, 0b11100000, 0b11100000, 0b10000000, 0b10000000};
+byte skull3[] = {0b11100000, 0b11110000, 0b11110000, 0b11010000, 0b01110000, 0b11110000, 0b01000000, 0b01000000};
+byte skull4[] = {0b11110000, 0b11111000, 0b11111000, 0b11101000, 0b10111000, 0b11111000, 0b10100000, 0b10100000};
+byte skull5[] = {0b11111000, 0b11111100, 0b11111100, 0b01110100, 0b11011100, 0b11111100, 0b01010000, 0b01010000};
+byte skull6[] = {0b11111100, 0b11111110, 0b11111110, 0b10111010, 0b11101110, 0b11111110, 0b10101000, 0b10101000};
+byte skull7[] = {0b01111110, 0b11111111, 0b11111111, 0b11011101, 0b11110111, 0b11111111, 0b01010100, 0b01010100};
+byte skull8[] = {0b00111111, 0b01111111, 0b01111111, 0b01101110, 0b01111011, 0b01111111, 0b00101010, 0b00101010};
+byte skull9[] = {0b00011111, 0b00111111, 0b00111111, 0b00110111, 0b00111101, 0b00111111, 0b00010101, 0b00010101};
+byte skull10[] = {0b00001111, 0b00011111, 0b00011111, 0b00011011, 0b00011110, 0b00011111, 0b00001010, 0b00001010};
+byte skull11[] = {0b00000111, 0b00001111, 0b00001111, 0b00001101, 0b00001111, 0b00001111, 0b00000101, 0b00000101};
+byte skull12[] = {0b00000011, 0b00000111, 0b00000111, 0b00000110, 0b00000111, 0b00000111, 0b00000010, 0b00000010};
+byte skull13[] = {0b00000001, 0b00000011, 0b00000011, 0b00000011, 0b00000011, 0b00000011, 0b00000001, 0b00000001};
+byte skull14[] = {0b00000000, 0b00000001, 0b00000001, 0b00000001, 0b00000001, 0b00000001, 0b00000000, 0b00000000};
+byte skull15[] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000};
+
+
+
+
+byte music[] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b11111111}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte music1[] = {0b11111111, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000,};
+
+byte musicc[] = {0b00000000, 0b00000000, 0b00000001, 0b00010001, 0b00010011, 0b00110111, 0b01110111, 0b11111111}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte musicc1[] = {0b00000000, 0b10000000, 0b10000000, 0b10000000, 0b10001000, 0b11011001, 0b11011101, 0b11111111};
+byte musicc2[] = {0b00000000, 0b00000000, 0b00001000, 0b00001100, 0b00101100, 0b10111101, 0b10111101, 0b11111111};
+byte musicc3[] = {0b00000000, 0b00100000, 0b00100001, 0b00110011, 0b00110011, 0b10111011, 0b11111011, 0b11111111};
+
+
+byte musiccc[] = {0b00000000, 0b00000000, 0b10000000, 0b10001000, 0b10001010, 0b11011110, 0b11011111, 0b11111111}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte musiccc1[] = {0b00000000, 0b00000000, 0b01000000, 0b01000000, 0b11010000, 0b11110101, 0b11110111, 0b11111111};
+byte musiccc2[] = {0b00000000, 0b01000000, 0b01000000, 0b01000000, 0b11010000, 0b11110101, 0b11110111, 0b11111111};
+byte musiccc3[] = {0b00000000, 0b00000000, 0b00000000, 0b00100000, 0b10110000, 0b11110001, 0b11110011, 0b11111111};
+
+byte mc[] = {0b11111111, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+
+byte m[] = {0b11111111, 0b00010100, 0b00010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte m1[] = {0b11111111, 0b00100000, 0b00100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte m2[] = {0b11111111, 0b00011001, 0b00010001, 0b00000001, 0b00000000, 0b00000000, 0b00000000, 0b00000000}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte m3[] = {0b11111111, 0b11001000, 0b10001000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+
+byte mm[] = {0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b00001000, 0b00101000, 0b00101101, 0b11111111}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte mm1[] = {0b00000000, 0b00000000, 0b00000000, 0b00000100, 0b00000100, 0b01010100, 0b01011101, 0b11111111}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte mm2[] = {0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b10001000, 0b10011000, 0b10011010, 0b11111111}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte mm3[] = {0b00000000, 0b00000000, 0b00000001, 0b00010001, 0b00010001, 0b01010011, 0b11011011, 0b11111111}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+
+
+
+byte spiderman[] = {0b10100101, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte spiderman1[] = {0b10011001, 0b10100101, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000};
+byte spiderman2[] = {0b01111110, 0b10011001, 0b10100101, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000};
+byte spiderman3[] = {0b00111100, 0b01111110, 0b10011001, 0b10100101, 0b00000000, 0b00000000, 0b00000000, 0b00000000};
+byte spiderman4[] = {0b00111100, 0b00111100, 0b01111110, 0b10011001, 0b10100101, 0b00000000, 0b00000000, 0b00000000};
+byte spiderman5[] = {0b01111110, 0b00111100, 0b00111100, 0b01111110, 0b10011001, 0b10100101, 0b00000000, 0b00000000};
+byte spiderman6[] = {0b10011001, 0b01111110, 0b00111100, 0b00111100, 0b01111110, 0b10011001, 0b10100101, 0b00000000};
+byte spiderman7[] = {0b10000001, 0b10011001, 0b01111110, 0b00111100, 0b00111100, 0b01111110, 0b10011001, 0b10100101};
+byte spiderman8[] = {0b00000000, 0b10000001, 0b10011001, 0b01111110, 0b00111100, 0b00111100, 0b01111110, 0b10011001};
+byte spiderman9[] = {0b00000000, 0b00000000, 0b10000001, 0b10011001, 0b01111110, 0b00111100, 0b00111100, 0b01111110};
+byte spiderman10[] = {0b00000000, 0b00000000, 0b00000000, 0b10000001, 0b10011001, 0b01111110, 0b00111100, 0b00111100};
+byte spiderman11[] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b10000001, 0b10011001, 0b01111110, 0b00111100};
+byte spiderman12[] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b10000001, 0b10011001, 0b01111110};
+byte spiderman13[] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b10000001, 0b10011001};
+byte spiderman14[] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b10000001};
+
+byte RIP [] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00111100}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte RIP1 [] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00111100, 0b01011010};
+byte RIP2 [] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00111100, 0b01011010, 0b01111110};
+byte RIP3 [] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00111100, 0b01011010, 0b01111110, 0b01111110};
+byte RIP4 [] = {0b00000000, 0b00000000, 0b00000000, 0b00111100, 0b01011010, 0b01111110, 0b01111110, 0b01011010};
+byte RIP5 [] = {0b00000000, 0b00000000, 0b00111100, 0b01011010, 0b01111110, 0b01111110, 0b01011010, 0b01011010};
+byte RIP6 [] = {0b00000000, 0b00111100, 0b01011010, 0b01111110, 0b01111110, 0b01011010, 0b01011010, 0b01011010};
+byte RIP7 [] = {0b00111100, 0b01011010, 0b01111110, 0b01111110, 0b01011010, 0b01011010, 0b01011010, 0b11111111};
+
+
+
+byte candy [] = {0b00000001, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte candy1 [] = {0b00000111, 0b00000011, 0b00000001, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000};
+byte candy2 [] = {0b00000011, 0b00001111, 0b00000110, 0b00000010, 0b00000000, 0b00000000, 0b00000000, 0b00000000};
+byte candy3 [] = {0b00000111, 0b00000111, 0b00011111, 0b00001100, 0b00000100, 0b00000000, 0b00000000, 0b00000000};
+byte candy4 [] = {0b00000111, 0b00001111, 0b00001111, 0b00111110, 0b00011000, 0b00001000, 0b00000000, 0b00000000};
+byte candy5 [] = {0b00000011, 0b00001111, 0b00011110, 0b00011110, 0b01111100, 0b00110000, 0b00010000, 0b00000000};
+byte candy6 [] = {0b00000100, 0b00000110, 0b00011111, 0b00111100, 0b00111100, 0b11111000, 0b01100000, 0b00100000};
+byte candy7 [] = {0b00000000, 0b00001000, 0b00001100, 0b00111110, 0b01111000, 0b01111000, 0b11110000, 0b11000000};
+byte candy8 [] = {0b00000000, 0b00000000, 0b00010000, 0b00011000, 0b01111100, 0b11110000, 0b11110000, 0b11100000};
+byte candy9 [] = {0b00000000, 0b00000000, 0b00000000, 0b00100000, 0b00110000, 0b11111000, 0b11100000, 0b11100000};
+byte candy10 [] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b01000000, 0b01100000, 0b11110000, 0b11000000};
+byte candy11 [] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b11000000, 0b11100000};
+byte candy12 [] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b10000000};
+
+byte cat [] = {0b00000000, 0b00000000, 0b00000001, 0b00000001, 0b00000001, 0b00000000, 0b00000000, 0b00000000}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte cat1 [] = {0b00000000, 0b00000000, 0b00000010, 0b00000011, 0b00000011, 0b00000000, 0b00000000, 0b00000001};
+byte cat2 [] = {0b00000000, 0b00000000, 0b00000101, 0b00000111, 0b00000111, 0b00000001, 0b00000001, 0b00000001};
+byte cat3 [] = {0b00000000, 0b00000000, 0b00001010, 0b00001110, 0b00001110, 0b00000011, 0b00000011, 0b00000101};
+byte cat4 [] = {0b00000000, 0b00000000, 0b00010100, 0b00011101, 0b00011100, 0b00000111, 0b00000111, 0b00000110};
+byte cat5 [] = {0b00000000, 0b00000000, 0b00101001, 0b00111010, 0b00111000, 0b00001111, 0b00001111, 0b00010101};
+byte cat6 [] = {0b00000000, 0b00000000, 0b01010010, 0b01110101, 0b01110001, 0b00011110, 0b00011110, 0b00101101};
+byte cat7 [] = {0b00000000, 0b00000000, 0b01010010, 0b01110101, 0b01110001, 0b00011110, 0b00011110, 0b00101011};
+byte cat8 [] = {0b00000000, 0b00000000, 0b01001010, 0b10101110, 0b10001110, 0b01111000, 0b01111000, 0b11010100};
+byte cat9 [] = {0b00000000, 0b00000000, 0b00100101, 0b01010111, 0b01000111, 0b00111100, 0b00111100, 0b01101010};
+byte cat10 [] = {0b00000000, 0b00000000, 0b00010010, 0b00101011, 0b00100011, 0b00011110, 0b00011110, 0b00101011};
+byte cat11 [] = {0b00000000, 0b00000000, 0b00001001, 0b00010101, 0b00010001, 0b00001111, 0b00001111, 0b00001101};
+byte cat12 [] = {0b00000000, 0b00000000, 0b00000100, 0b00001010, 0b00001000, 0b00000111, 0b00000111, 0b00001011};
+byte cat13 [] = {0b00000000, 0b00000000, 0b00000010, 0b00000101, 0b00000100, 0b00000011, 0b00000011, 0b00000101};
+byte cat14 [] = {0b00000000, 0b00000000, 0b00000001, 0b00000010, 0b00000010, 0b00000001, 0b00000001, 0b00000011};
+byte cat15 [] = {0b00000000, 0b00000000, 0b00000000, 0b00000001, 0b00000001, 0b00000000, 0b00000000, 0b00000001};
+
+
+byte R [] = {0b01111000, 0b01000100, 0b01000100, 0b01000100, 0b01111000, 0b01010000, 0b01001000, 0b01000100}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+byte R1 [] = {0b01111110, 0b00011000, 0b00011000, 0b00011000, 0b00011000, 0b00011000, 0b00011000, 0b01111110};
+byte R2 [] = {0b01111000, 0b01000100, 0b01000100, 0b01000100, 0b01111000, 0b01000000, 0b01000011, 0b01000011};
+
+
+
+
+
+
+byte black[] = {0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000}; //กำหนัด ตัวแปร เป็น byte แบบ Array  โดยค่า 0 = LOW 1 = HIGH
+
+
+
+
+
+
+void loop() {
+
+
+  if ( end < 4) {                         // if เงื่อนไขนี้ ใช้ในการออกจากเงื่อนไข
+
+
+    // show pumpkin
+    printByte0(S);                          //แสดง ฟักทอง
+    printByte1(pumpkin);                    //แสดง ฟักทอง
+    printByte2(pumpkin1);                    //แสดง ฟักทอง
+    printByte3(S1);                          //แสดง ฟักทอง
+    delay(1500);                             //คือ delay == 1500
+
+    // Halloween
+    for ( i = 0; i < 6; i++) {             //for Halloween dukdik
+
+      printByte0(Halloween);                  //คำ Halloween ดุกดิก
+      printByte1(Halloween1);                 //คำ Halloween ดุกดิก
+      printByte2(Halloween2);                 //คำ Halloween ดุกดิก
+      printByte3(Halloween3);                 //คำ Halloween ดุกดิก
+      delay(500);                             //คือ delayที่ทำให้คำ Halloween ดุกดิก
+      printByte0(Halloweenn);                 //คำ Halloween ดุกดิก
+      printByte1(Halloweenn1);                //คำ Halloween ดุกดิก
+      printByte2(Halloweenn2);                //คำ Halloween ดุกดิก
+      printByte3(Halloweenn3);                //คำ Halloween ดุกดิก
+      delay(500);                             //คือ delayที่ทำให้คำ Halloween ดุกดิก
+
+    }
+    //clear
+    if (i < 7) {
+      printByte4(black);                       // print เป็น sceen balck เพื่อ clear frame 4 จอ
+    }
+
+    // Show 4 Frame
+    printByte0(spiderman);   //Frame3        //แสดง ตัว แมงมุม
+    delay(delayTime);                        // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman1);                  //แสดง ตัว แมงมุม
+    delay(delayTime);                        // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman2);                  //แสดง ตัว แมงมุม
+    delay(delayTime);                        // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman3);                  //แสดง ตัว แมงมุม
+    delay(delayTime);                        // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman4);                  //แสดง ตัว แมงมุม
+    delay(delayTime);                        // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman5);                  //แสดง ตัว แมงมุม
+    delay(delayTime);                         // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman6);                  //แสดง ตัว แมงมุม
+    delay(delayTime);                        // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman7);                  //แสดง ตัว แมงมุม
+    delay(delayTime);                        // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+
+
+    // RIP
+
+    printByte1(RIP);                         //แสดง หลุมศพ RIP
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP1);                        //แสดง หลุมศพ RIP
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP2);                        //แสดง หลุมศพ RIP
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP3);                        //แสดง หลุมศพ RIP
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP4);                        //แสดง หลุมศพ RIP
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP5);                        //แสดง หลุมศพ RIP
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP6);                        //แสดง หลุมศพ RIP
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP7);                        //แสดง หลุมศพ RIP
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+
+    // open candy
+    printByte2(candy);                      //แสดง ลูกอม
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(candy1);                     //แสดง ลูกอม
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(candy2);                     //แสดง ลูกอม
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(candy3);                     //แสดง ลูกอม
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(candy4);                     //แสดง ลูกอม
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(candy5);                     //แสดง ลูกอม
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(candy6);                     //แสดง ลูกอม
+    delay(delayTime);                       // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    // open cat
+    printByte3(cat);                       //แสดง แมวเดิน
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat1);                      //แสดง แมวเดิน
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat2);                      //แสดง แมวเดิน
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat3);                      //แสดง แมวเดิน
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat4);                      //แสดง แมวเดิน
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat5);                      //แสดง แมวเดิน
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat6);                      //แสดง แมวเดิน
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+
+    // cb sp
+
+    printByte0(spiderman8);                //แสดง ตัว แมงมุม โดยค่านี้จะให้เป็นเดินการออกจาก Frame
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman9);                //แสดง ตัว แมงมุม โดยค่านี้จะให้เป็นเดินการออกจาก Frame
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman10);               //แสดง ตัว แมงมุม โดยค่านี้จะให้เป็นเดินการออกจาก Frame
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman11);               //แสดง ตัว แมงมุม โดยค่านี้จะให้เป็นเดินการออกจาก Frame
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman12);               //แสดง ตัว แมงมุม โดยค่านี้จะให้เป็นเดินการออกจาก Frame
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman13);               //แสดง ตัว แมงมุม โดยค่านี้จะให้เป็นเดินการออกจาก Frame
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(spiderman14);               //แสดง ตัว แมงมุม โดยค่านี้จะให้เป็นเดินการออกจาก Frame
+    delay(delayTime);                      // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+
+
+    printByte0(black);                    // print เป็น sceen balck เพื่อ clear frame จอที่ 1
+    delay(delayTime);                     // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+
+
+    // cb RIP
+    printByte1(RIP7);                    //แสดง ให้หลุมศพ เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP6);                    //แสดง ให้หลุมศพ เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP5);                    //แสดง ให้หลุมศพ เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP4);                    //แสดง ให้หลุมศพ เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP3);                    //แสดง ให้หลุมศพ เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP2);                    //แสดง ให้หลุมศพ เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP1);                    //แสดง ให้หลุมศพ เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(RIP);                     //แสดง ให้หลุมศพ เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+
+    printByte1(black);                   // print เป็น sceen balck เพื่อ clear frame จอที่ 2
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+
+    // cb candy
+
+    printByte2(candy7);                  //แสดง ลูกอม เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(candy8);                  //แสดง ลูกอม เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(candy9);                  //แสดง ลูกอม เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(candy10);                 //แสดง ลูกอม เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(candy11);                 //แสดง ลูกอม เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(candy12);                 //แสดง ลูกอม เคลื่อน กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+
+    printByte2(black);                   // print เป็น sceen balck เพื่อ clear frame จอที่ 3
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+
+
+    // cb cat
+
+    printByte3(cat7);                    //แสดง แมวเดิน  กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat8);                    //แสดง แมวเดิน  กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat9);                    //แสดง แมวเดิน  กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat10);                   //แสดง แมวเดิน  กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat11);                   //แสดง แมวเดิน  กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat12);                   //แสดง แมวเดิน  กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat13);                   //แสดง แมวเดิน  กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat14);                   //แสดง แมวเดิน  กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(cat15);                   //แสดง แมวเดิน  กลับ
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+
+    printByte3(black);                   // print เป็น sceen balck เพื่อ clear frame จอที่ 4
+    delay(delayTime);                    // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+
+
+
+
+
+
+
+
+    // Moving
+
+    printByte0(skull);      //Frame 3   // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                  // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(skull1);                 // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                  // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(skull2);                 // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                  // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(skull3);                 // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                  // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(skull4);                 // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                  // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(skull5);                 // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                  // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(skull6);                 // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                  // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte0(skull7);                 // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                  // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(skull);      //Frame 2   // การแสดงนี้ โดยที่ไม่ให้ค่าdelay เพราะ จะให้แสดง พร้อมกับ skull8 เพื่อนทำให้การเคลื่อที่ smooth
+    printByte0(skull8);                 // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                  // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(skull1);                 // กระดูกเคลื่อนจาก จอที่ 2
+    printByte0(skull9);                 // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                  // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(skull2);                 // กระดูกเคลื่อนจาก จอที่ 2
+    printByte0(skull10);                // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                  // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(skull3);                 // กระดูกเคลื่อนจาก จอที่ 2
+    printByte0(skull11);               // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(skull4);                // กระดูกเคลื่อนจาก จอที่ 2
+    printByte0(skull12);               // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(skull5);                // กระดูกเคลื่อนจาก จอที่ 2
+    printByte0(skull13);               // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(skull6);                // กระดูกเคลื่อนจาก จอที่ 2
+    printByte0(skull14);               // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte1(skull7);                // กระดูกเคลื่อนจาก จอที่ 2
+    printByte0(skull15);               // กระดูกเคลื่อนจาก จอที่ 1
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(skull);    // Frame 1   // การแสดงนี้ โดยที่ไมให้ค่าdelay เพราะ จะให้แสดง พร้อมกับ skull8 เพื่อนทำให้การเคลื่อที่ smooth
+    printByte1(skull8);                // กระดูกเคลื่อนจาก จอที่ 2
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(skull1);                // กระดูกเคลื่อนจาก จอที่ 3
+    printByte1(skull9);                // กระดูกเคลื่อนจาก จอที่ 2
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(skull2);                //กระดูกเคลื่อนจาก จอที่ 3
+    printByte1(skull10);               // กระดูกเคลื่อนจาก จอที่ 2
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(skull3);                // กระดูกเคลื่อนจาก จอที่ 3
+    printByte1(skull11);               // กระดูกเคลื่อนจาก จอที่ 2
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(skull4);                // กระดูกเคลื่อนจาก จอที่ 3
+    printByte1(skull12);               // กระดูกเคลื่อนจาก จอที่ 2
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(skull5);                // กระดูกเคลื่อนจาก จอที่ 3
+    printByte1(skull13);               // กระดูกเคลื่อนจาก จอที่ 2
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(skull6);                // กระดูกเคลื่อนจาก จอที่ 3
+    printByte1(skull14);               // กระดูกเคลื่อนจาก จอที่ 2
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte2(skull7);                // กระดูกเคลื่อนจาก จอที่ 3
+    printByte1(skull15);               // กระดูกเคลื่อนจาก จอที่ 2
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(skull);      //Frame 0  // การแสดงนี้ โดยที่ไมให้ค่าdelay เพราะ จะให้แสดง พร้อมกับ skull8 เพื่อนทำให้การเคลื่อที่ smooth
+    printByte2(skull8);                // กระดูกเคลื่อนจาก จอที่ 3
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(skull1);                // กระดูกเคลื่อนจาก จอที่ 4
+    printByte2(skull9);                // กระดูกเคลื่อนจาก จอที่ 3
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(skull2);                // กระดูกเคลื่อนจาก จอที่ 4
+    printByte2(skull10);               // กระดูกเคลื่อนจาก จอที่ 3
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(skull3);                // กระดูกเคลื่อนจาก จอที่ 4
+    printByte2(skull11);               // กระดูกเคลื่อนจาก จอที่ 3
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(skull4);                // กระดูกเคลื่อนจาก จอที่ 4
+    printByte2(skull12);               // กระดูกเคลื่อนจาก จอที่ 3
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(skull5);                // กระดูกเคลื่อนจาก จอที่ 4
+    printByte2(skull13);               // กระดูกเคลื่อนจาก จอที่ 3
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(skull6);                // กระดูกเคลื่อนจาก จอที่ 4
+    printByte2(skull14);               // กระดูกเคลื่อนจาก จอที่ 3
+    delay(delayTime1);                 // ค่า delay เคลื่อนที่ โดย ค่า delayTime = 125
+    printByte3(skull7);                // กระดูกเคลื่อนจาก จอที่ 4
+    printByte2(skull15);               // กระดูกเคลื่อนจาก จอที่ 3
+    delay(500);                        // ค่า delay เคลื่อนที่ โดย ค่า delay เป็น 500
+
+    do {                                     // Do  เงื่อนไขนี้ คือการทำใหห แสดงค่า ของคำ RIP. ในแต่ละจอ ใน 3 Frame ให้แสดง 3รอบ
+      printByte0(black);                     // print เป็น sceen balck เพื่อ clear frame จอที่ 1
+      printByte1(black);                     // print เป็น sceen balck เพื่อ clear frame จอที่ 2
+      printByte2(black);                     // print เป็น sceen balck เพื่อ clear frame จอที่ 3
+      delay(150);                            // ค่า delay เคลื่อนที่ โดย ค่า delay เป็น 150
+      printByte0(R);         //R             //แสดง ตัวอักษร R ในจอที่ 1
+      delay(500);                            // ค่า delay เคลื่อนที่ โดย ค่า delay เป็น 150
+      printByte1(R1);        //I             //แสดง ตัวอักษร R ในจอที่ 1
+      delay(500);                           // ค่า delay เคลื่อนที่ โดย ค่า delay เป็น 500
+      printByte2(R2);        //P             //แสดง ตัวอักษร R ในจอที่ 1
+      delay(1000);                          // ค่า delay เคลื่อนที่ โดย ค่า delay เป็น 1000
+
+      rip++;                                // ค่า rip นี้ จะประกาศไว้ข้างบน จะนำมาใช้ในเงื่อนไข Do while โดยให้ค่า rip + 1
+
+    } while (rip < 3);                      //While  ใช้ในการออกจากเงื่อน ถ้าเงื่อนไข เป็น False
+
+
+
+    // Music
+    for ( i = 0; i < 10; i++) {          //for music    เงื่อนไขนี้ คือการทำให้ เกิดคลื่น music
+      //โดยประกาศตัวแปร i = 0; แล้วถ้า i<10 ให้ทำตามเงื่อนไขจนจบ แล้วให้ i+1
+
+      printByte4(music);                   //แสดงค่า คลื่น music 4 จอพร้อมกัน
+      delay(150);                          // ค่า delay เคลื่อนที่ โดย ค่า delay เป็น 150
+      printByte0(musicc);                   //แสดงค่า คลื่น music ในจอที่ 1
+      printByte1(musicc1);                 //แสดงค่า คลื่น music ในจอที่ 2
+      printByte2(musicc2);                 //แสดงค่า คลื่น music ในจอที่ 3
+      printByte3(musicc3);                 //แสดงค่า คลื่น music ในจอที่ 4
+      delay(150);                          // ค่า delay เคลื่อนที่ โดย ค่า delay เป็น 150
+      printByte4(music);                   //แสดงค่า คลื่น music 4 จอพร้อมกัน
+      delay(150);                          // ค่า delay เคลื่อนที่ โดย ค่า delay เป็น 150
+      printByte0(musiccc);                 //แสดงค่า คลื่น music ในจอที่ 1
+      printByte1(musiccc1);                //แสดงค่า คลื่น music ในจอที่ 2
+      printByte2(musiccc2);                //แสดงค่า คลื่น music ในจอที่ 3
+      printByte3(musiccc3);                //แสดงค่า คลื่น music ในจอที่ 4
+      delay(150);                          // ค่า delay เคลื่อนที่ โดย ค่า delay เป็น 150
+
+    }
+    if (i < 11) {
+      printByte4(black);                    // print เป็น sceen balck เพื่อ clear frame จอที่ 4
+    }
+    end++;                               //ค่า end นี้ จะประกาศไว้ข้างบน จะนำมาใช้ในเงื่อนไข if else โดยให้ค่า end + 1
+  } else {
+    exitend();                     // function exit program เป็นfunction ที่ไว้ออกจากการทำงานของ loop
+  }
+
+
+}
+
+
+
+
+void printByte0(byte character [])                    // function แสดง ค่าในจอที่ 1
+{
+  int i = 0;
+  for (i = 0; i < 8; i++)
+  {
+    lc.setRow(3, i, character[i]);
+  }
+}
+
+
+
+void printByte1(byte character [])                    // function แสดง ค่าในจอที่ 2
+{
+  int i = 0;
+  for (i = 0; i < 8; i++)                             // เงื่อนไข
+  {
+    lc.setRow(2, i, character[i]);
+  }
+}
+
+
+
+void printByte2(byte character [])                    // function แสดง ค่าในจอที่ 3
+{
+  int i = 0;
+  for (i = 0; i < 8; i++)                            // เงื่อนไข
+  {
+    lc.setRow(1, i, character[i]);
+  }
+}
+
+
+
+void printByte3(byte character [])                    // function แสดง ค่าในจอที่ 4
+{
+  int i = 0;
+  for (i = 0; i < 8; i++)                             // เงื่อนไข
+  {
+    lc.setRow(0, i, character[i]);
+  }
+}
+
+
+
+void printByte4(byte character [])                // function แสดง ค่าในจอที่ 4 จอพร้อมกัน
+{
+  int i = 0;
+  for (i = 0; i < 8; i++)                          // เงื่อนไข ในการอ่านค่า Array
+  {
+    lc.setRow(3, i, character[i]);
+    lc.setRow(2, i, character[i]);
+    lc.setRow(1, i, character[i]);
+    lc.setRow(0, i, character[i]);
+  }
+}
+
+
+void exitend() {                                 // function แสดง ค่าในจอที่ 4
+  {
+    exit;
+  }
+}
